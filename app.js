@@ -3,6 +3,7 @@ const $text = document.querySelector('#text');
 const $button = document.querySelector('#button');
 const $copy = document.querySelector('#copy');
 const $textsToCopy = document.querySelector('#textsToCopy');
+const $removedWords = document.querySelector('#removedWords');
 
 $button.addEventListener('click', e => {
 	e.preventDefault();
@@ -10,6 +11,8 @@ $button.addEventListener('click', e => {
 	let texts = $text.value.split('\n');
 	keywords = keywords.map(text => (text.normalize("NFD").replace(/[\u0300-\u036f]/g, "")).trim().toLowerCase());
 	texts = texts.map(text => (text.normalize("NFD").replace(/[\u0300-\u036f]/g, "")).toLowerCase());
+
+	const initialTextsLength = texts.length;
 
 	texts = texts.filter(text => {
 		let haveKeyword = false;
@@ -20,9 +23,10 @@ $button.addEventListener('click', e => {
 		if (!haveKeyword) return text;
 	});
 
-	console.log(texts);
+	const newTextsLength = texts.length;
 
 	$textsToCopy.innerHTML = texts.join('<br />');
+	$removedWords.innerHTML = `${initialTextsLength - newTextsLength} mots ont étés enlevés <br />`;
 });
 
 $copy.addEventListener('click', e => {
